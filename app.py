@@ -1,6 +1,11 @@
-from flask import Flask
+from flask import Flask, render_template
+from forms import inputData
 
 app = Flask(__name__)
+
+# this config is used in conjunction with WTFORMS
+app.config['SECRET_KEY'] = 'glitch'
+
 # this is a route that tell flask how to get to this page and display it.
 # at the browser when [127.0.0.1:5000/] is entered flask will call upon the 
 # "home" python function.
@@ -11,7 +16,18 @@ app = Flask(__name__)
 # update
 @app.route("/")
 def home():
-    return "<p>search</p> <p>update</p>"
+    return render_template('home.html')
+
+# this route will be used to access the function that will allow the user to enter a new cheatsheet item
+# it is called upon by typing the following in the URL bar "127.0.0.1:5000/newitem"
+# or it can be called upon but another function by using its function name "newitem"
+@app.route("/newitem")
+def newitem():
+    form = inputData()
+    return render_template('input.html', form=form)
+
+
+
 
 if __name__ == "__main__":
     app.run()
