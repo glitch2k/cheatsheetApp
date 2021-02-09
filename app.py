@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, request
 from forms import inputData
 
 app = Flask(__name__)
@@ -21,9 +21,12 @@ def home():
 # this route will be used to access the function that will allow the user to enter a new cheatsheet item
 # it is called upon by typing the following in the URL bar "127.0.0.1:5000/newitem"
 # or it can be called upon but another function by using its function name "newitem"
-@app.route("/newitem")
+@app.route("/newitem", methods=['GET', 'POST'])
 def newitem():
     form = inputData()
+    if form.is_submitted():
+        result = request.form
+        return render_template('dataFromForms.html', result=result)
     return render_template('input.html', form=form)
 
 
